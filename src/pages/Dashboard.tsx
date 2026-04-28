@@ -12,7 +12,16 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
 } from "recharts";
 
-const phaseFill = ["hsl(var(--phase-ingest))", "hsl(var(--phase-cleanse))", "hsl(var(--phase-broker))", "hsl(var(--phase-deliver))"];
+const phaseFill = [
+  "hsl(var(--phase-sensor))",
+  "hsl(var(--phase-edge))",
+  "hsl(var(--phase-transport))",
+  "hsl(var(--phase-landing))",
+  "hsl(var(--phase-ingest))",
+  "hsl(var(--phase-cleanse))",
+  "hsl(var(--phase-broker))",
+  "hsl(var(--phase-deliver))",
+];
 
 export default function Dashboard() {
   const initiatives = useEvaluationStore((s) => s.initiatives);
