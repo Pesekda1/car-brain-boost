@@ -45,10 +45,21 @@
     --radius: 0.75rem;
 
     /* Phase palette */
+    --phase-sensor: 0 80% 65%;
+    --phase-edge: 18 95% 60%;
+    --phase-transport: 48 95% 58%;
+    --phase-landing: 95 70% 55%;
     --phase-ingest: 188 95% 55%;
     --phase-cleanse: 262 80% 65%;
-    --phase-broker: 38 95% 60%;
+    --phase-broker: 320 80% 65%;
     --phase-deliver: 152 70% 48%;
+
+    /* Layer palette */
+    --layer-vehicle: 0 80% 65%;
+    --layer-edge: 28 95% 60%;
+    --layer-transport: 48 95% 58%;
+    --layer-cloud: 200 95% 60%;
+    --layer-platform: 262 80% 65%;
 
     /* Gradients & effects */
     --gradient-primary: linear-gradient(135deg, hsl(188 95% 55%), hsl(210 100% 65%));
