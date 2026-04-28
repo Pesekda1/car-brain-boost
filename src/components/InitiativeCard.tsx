@@ -16,6 +16,7 @@ const phaseColor: Record<PhaseId, string> = {
 export function InitiativeCard({ initiative, onClick }: { initiative: Initiative; onClick?: () => void }) {
   const phase = PHASES.find((p) => p.id === initiative.phase)!;
   const level = OPS_LEVELS.find((l) => l.id === initiative.level)!;
+  const layer = LAYERS.find((l) => l.id === initiative.layer)!;
   const score = effectivenessScore(initiative.scores);
   const status = STATUS_META[initiative.status];
 
@@ -27,6 +28,7 @@ export function InitiativeCard({ initiative, onClick }: { initiative: Initiative
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex flex-wrap gap-1.5">
           <Badge variant="outline" className={phaseColor[initiative.phase]}>{phase.short}</Badge>
+          <Badge variant="outline" className="border-border text-muted-foreground">{layer.label}</Badge>
           <Badge variant="outline" className="border-border text-muted-foreground capitalize">{level.label}</Badge>
           <Badge variant="outline" className={status.tone}>{status.label}</Badge>
         </div>
