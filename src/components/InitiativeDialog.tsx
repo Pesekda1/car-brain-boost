@@ -115,16 +115,25 @@ export function InitiativeDialog({ open, onOpenChange, initiativeId }: { open: b
             </div>
           </div>
 
-          <div className="rounded-lg border border-border p-4 space-y-4 bg-secondary/30">
+          <div className="rounded-lg border border-border p-4 space-y-5 bg-secondary/30">
             <div className="text-sm font-medium">Effectiveness scoring (0–10)</div>
-            {DIMENSIONS.map((d) => (
-              <div key={d.id} className="grid gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label className="text-sm">{d.label}</Label>
-                  <span className="text-sm font-mono text-primary">{draft.scores[d.id]}</span>
+            {(["value", "technical"] as const).map((group) => (
+              <div key={group} className="space-y-3">
+                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                  {group === "value" ? "Value dimensions" : "Technical dimensions (low-level / upstream)"}
                 </div>
-                <Slider min={0} max={10} step={1} value={[draft.scores[d.id]]} onValueChange={([v]) => setScore(d.id, v)} />
-                <p className="text-xs text-muted-foreground">{d.description}</p>
+                <div className="grid sm:grid-cols-2 gap-x-4 gap-y-3">
+                  {DIMENSIONS.filter((d) => d.group === group).map((d) => (
+                    <div key={d.id} className="grid gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm">{d.label}</Label>
+                        <span className="text-sm font-mono text-primary">{draft.scores[d.id]}</span>
+                      </div>
+                      <Slider min={0} max={10} step={1} value={[draft.scores[d.id]]} onValueChange={([v]) => setScore(d.id, v)} />
+                      <p className="text-[11px] text-muted-foreground leading-snug">{d.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
