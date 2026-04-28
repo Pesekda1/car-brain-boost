@@ -6,15 +6,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DIMENSIONS, OPS_LEVELS, PHASES, STATUS_META, type Initiative, type OpsLevel, type PhaseId, type Status } from "@/lib/evaluation-types";
+import { DIMENSIONS, LAYERS, OPS_LEVELS, PHASES, STATUS_META, type Initiative, type Layer, type OpsLevel, type PhaseId, type Status } from "@/lib/evaluation-types";
 import { useEvaluationStore } from "@/lib/evaluation-store";
 import { Trash2 } from "lucide-react";
 
 const blank: Omit<Initiative, "id" | "createdAt"> = {
   name: "", description: "",
-  phase: "ingest", level: "tactical", status: "idea", approach: "build",
+  phase: "ingest", layer: "platform", level: "tactical", status: "idea", approach: "build",
   estCost: 100, estRoi: 150,
-  scores: { businessImpact: 5, operationalEfficiency: 5, riskCompliance: 5, feasibility: 5 },
+  scores: { businessImpact: 5, operationalEfficiency: 5, riskCompliance: 5, feasibility: 5, latency: 5, bandwidth: 5, safety: 5 },
   notes: "",
 };
 
@@ -61,9 +61,22 @@ export function InitiativeDialog({ open, onOpenChange, initiativeId }: { open: b
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
               <Label>Phase</Label>
-              <Select value={draft.phase} onValueChange={(v: PhaseId) => setDraft({ ...draft, phase: v })}>
+              <Select
+                value={draft.phase}
+                onValueChange={(v: PhaseId) => {
+                  const meta = PHASES.find((p) => p.id === v);
+                  setDraft({ ...draft, phase: v, layer: meta?.defaultLayer ?? draft.layer });
+                }}
+              >
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{PHASES.map((p) => <SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label>Layer</Label>
+              <Select value={draft.layer} onValueChange={(v: Layer) => setDraft({ ...draft, layer: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>{LAYERS.map((l) => <SelectItem key={l.id} value={l.id}>{l.label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
@@ -102,16 +115,25 @@ export function InitiativeDialog({ open, onOpenChange, initiativeId }: { open: b
             </div>
           </div>
 
-          <div className="rounded-lg border border-border p-4 space-y-4 bg-secondary/30">
+          <div className="rounded-lg border border-border p-4 space-y-5 bg-secondary/30">
             <div className="text-sm font-medium">Effectiveness scoring (0–10)</div>
-            {DIMENSIONS.map((d) => (
-              <div key={d.id} className="grid gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label className="text-sm">{d.label}</Label>
-                  <span className="text-sm font-mono text-primary">{draft.scores[d.id]}</span>
+            {(["value", "technical"] as const).map((group) => (
+              <div key={group} className="space-y-3">
+                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                  {group === "value" ? "Value dimensions" : "Technical dimensions (low-level / upstream)"}
                 </div>
-                <Slider min={0} max={10} step={1} value={[draft.scores[d.id]]} onValueChange={([v]) => setScore(d.id, v)} />
-                <p className="text-xs text-muted-foreground">{d.description}</p>
+                <div className="grid sm:grid-cols-2 gap-x-4 gap-y-3">
+                  {DIMENSIONS.filter((d) => d.group === group).map((d) => (
+                    <div key={d.id} className="grid gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm">{d.label}</Label>
+                        <span className="text-sm font-mono text-primary">{draft.scores[d.id]}</span>
+                      </div>
+                      <Slider min={0} max={10} step={1} value={[draft.scores[d.id]]} onValueChange={([v]) => setScore(d.id, v)} />
+                      <p className="text-[11px] text-muted-foreground leading-snug">{d.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

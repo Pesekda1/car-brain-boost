@@ -50,10 +50,21 @@ export default {
         success: { DEFAULT: "hsl(var(--success))", foreground: "hsl(var(--success-foreground))" },
         warning: { DEFAULT: "hsl(var(--warning))", foreground: "hsl(var(--warning-foreground))" },
         phase: {
+          sensor: "hsl(var(--phase-sensor))",
+          edge: "hsl(var(--phase-edge))",
+          transport: "hsl(var(--phase-transport))",
+          landing: "hsl(var(--phase-landing))",
           ingest: "hsl(var(--phase-ingest))",
           cleanse: "hsl(var(--phase-cleanse))",
           broker: "hsl(var(--phase-broker))",
           deliver: "hsl(var(--phase-deliver))",
+        },
+        layer: {
+          vehicle: "hsl(var(--layer-vehicle))",
+          edge: "hsl(var(--layer-edge))",
+          transport: "hsl(var(--layer-transport))",
+          cloud: "hsl(var(--layer-cloud))",
+          platform: "hsl(var(--layer-platform))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

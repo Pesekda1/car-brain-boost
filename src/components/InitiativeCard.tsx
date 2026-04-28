@@ -1,17 +1,22 @@
 import { Badge } from "@/components/ui/badge";
-import { PHASES, OPS_LEVELS, STATUS_META, effectivenessScore, type Initiative } from "@/lib/evaluation-types";
+import { LAYERS, PHASES, OPS_LEVELS, STATUS_META, effectivenessScore, type Initiative, type PhaseId } from "@/lib/evaluation-types";
 import { ArrowUpRight, Coins, TrendingUp } from "lucide-react";
 
-const phaseColor: Record<string, string> = {
-  ingest: "bg-phase-ingest/15 text-phase-ingest border-phase-ingest/30",
-  cleanse: "bg-phase-cleanse/15 text-phase-cleanse border-phase-cleanse/30",
-  broker: "bg-phase-broker/15 text-phase-broker border-phase-broker/30",
-  deliver: "bg-phase-deliver/15 text-phase-deliver border-phase-deliver/30",
+const phaseColor: Record<PhaseId, string> = {
+  sensor:    "bg-phase-sensor/15 text-phase-sensor border-phase-sensor/30",
+  edge:      "bg-phase-edge/15 text-phase-edge border-phase-edge/30",
+  transport: "bg-phase-transport/15 text-phase-transport border-phase-transport/30",
+  landing:   "bg-phase-landing/15 text-phase-landing border-phase-landing/30",
+  ingest:    "bg-phase-ingest/15 text-phase-ingest border-phase-ingest/30",
+  cleanse:   "bg-phase-cleanse/15 text-phase-cleanse border-phase-cleanse/30",
+  broker:    "bg-phase-broker/15 text-phase-broker border-phase-broker/30",
+  deliver:   "bg-phase-deliver/15 text-phase-deliver border-phase-deliver/30",
 };
 
 export function InitiativeCard({ initiative, onClick }: { initiative: Initiative; onClick?: () => void }) {
   const phase = PHASES.find((p) => p.id === initiative.phase)!;
   const level = OPS_LEVELS.find((l) => l.id === initiative.level)!;
+  const layer = LAYERS.find((l) => l.id === initiative.layer)!;
   const score = effectivenessScore(initiative.scores);
   const status = STATUS_META[initiative.status];
 
@@ -23,6 +28,7 @@ export function InitiativeCard({ initiative, onClick }: { initiative: Initiative
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex flex-wrap gap-1.5">
           <Badge variant="outline" className={phaseColor[initiative.phase]}>{phase.short}</Badge>
+          <Badge variant="outline" className="border-border text-muted-foreground">{layer.label}</Badge>
           <Badge variant="outline" className="border-border text-muted-foreground capitalize">{level.label}</Badge>
           <Badge variant="outline" className={status.tone}>{status.label}</Badge>
         </div>
