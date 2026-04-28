@@ -6,15 +6,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DIMENSIONS, OPS_LEVELS, PHASES, STATUS_META, type Initiative, type OpsLevel, type PhaseId, type Status } from "@/lib/evaluation-types";
+import { DIMENSIONS, LAYERS, OPS_LEVELS, PHASES, STATUS_META, type Initiative, type Layer, type OpsLevel, type PhaseId, type Status } from "@/lib/evaluation-types";
 import { useEvaluationStore } from "@/lib/evaluation-store";
 import { Trash2 } from "lucide-react";
 
 const blank: Omit<Initiative, "id" | "createdAt"> = {
   name: "", description: "",
-  phase: "ingest", level: "tactical", status: "idea", approach: "build",
+  phase: "ingest", layer: "platform", level: "tactical", status: "idea", approach: "build",
   estCost: 100, estRoi: 150,
-  scores: { businessImpact: 5, operationalEfficiency: 5, riskCompliance: 5, feasibility: 5 },
+  scores: { businessImpact: 5, operationalEfficiency: 5, riskCompliance: 5, feasibility: 5, latency: 5, bandwidth: 5, safety: 5 },
   notes: "",
 };
 
