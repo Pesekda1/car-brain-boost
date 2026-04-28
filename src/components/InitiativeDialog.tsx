@@ -61,9 +61,22 @@ export function InitiativeDialog({ open, onOpenChange, initiativeId }: { open: b
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
               <Label>Phase</Label>
-              <Select value={draft.phase} onValueChange={(v: PhaseId) => setDraft({ ...draft, phase: v })}>
+              <Select
+                value={draft.phase}
+                onValueChange={(v: PhaseId) => {
+                  const meta = PHASES.find((p) => p.id === v);
+                  setDraft({ ...draft, phase: v, layer: meta?.defaultLayer ?? draft.layer });
+                }}
+              >
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{PHASES.map((p) => <SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label>Layer</Label>
+              <Select value={draft.layer} onValueChange={(v: Layer) => setDraft({ ...draft, layer: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>{LAYERS.map((l) => <SelectItem key={l.id} value={l.id}>{l.label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
